@@ -67,6 +67,7 @@ router.put(
   catchAsync(async (req, res) => {
     const { id } = req.params;
     const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground });
+    req.flash("success", "Successfully Updated Campground!");
     res.redirect(`/campgrounds/${campground._id}`);
   })
 );
@@ -76,6 +77,7 @@ router.delete(
   catchAsync(async (req, res) => {
     const { id } = req.params;
     await Campground.findByIdAndDelete(id);
+    req.flash("success", "Succesfully deleted campground!");
     res.redirect("/campgrounds");
   })
 );
