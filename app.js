@@ -2,18 +2,14 @@ const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
 const ejsMate = require("ejs-mate");
-const { campgroundSchema, reviewSchema } = require("./schemas.js");
-const catchAsync = require("./utils/catchAsync");
+const session = require("express-session");
 const ExpressError = require("./utils/ExpressError");
 const methodOverride = require("method-override");
-const Campground = require("./models/campground");
-const Review = require("./models/review");
 
 const campgrounds = require("./routes/campgrounds");
 const reviews = require("./routes/reviews");
 
 const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/yelp-camp";
-
 mongoose.connect(dbUrl);
 
 const db = mongoose.connection;
@@ -31,6 +27,20 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
+
+const sessionConfig = {
+  // This is just a dummy secret for now.
+  secret: "secret",
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    httpOnly: true,
+    expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+  },
+};
+
+app.use(session(sessionConfig));
 
 app.use("/campgrounds", campgrounds);
 app.use("/campgrounds/:id/reviews", reviews);
