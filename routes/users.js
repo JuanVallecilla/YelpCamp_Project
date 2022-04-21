@@ -10,13 +10,17 @@ router.get("/register", (req, res) => {
 
 router.post(
   "/register",
-  catchAsync(async (req, res) => {
+  catchAsync(async (req, res, next) => {
     try {
       const { email, username, password } = req.body;
       const user = new User({ email, username });
       const registerUser = await User.register(user, password);
-      req.flash("success", "Welcome to Yelp Camp!");
-      res.redirect("/campgrounds");
+      // Allows the user to automatically ne log-in after registering
+      req.login(registerUser, (err) => {
+        if (err) return next(err);
+        req.flash("success", "Welcome to Yelp Camp!");
+        res.redirect("/campgrounds");
+      });
     } catch (e) {
       req.flash("error", e.message);
       res.redirect("register");
