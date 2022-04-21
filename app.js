@@ -57,11 +57,11 @@ passport.deserializeUser(User.deserializeUser());
 
 // Middleware to have access to anything stored in the flash under the key success/error etc. this makes it so we dont have to pass anything to our templates
 app.use((req, res, next) => {
+  res.locals.currentUser = req.user;
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
   next();
 });
-
 // Router Handlers
 app.use("/", userRoutes);
 app.use("/campgrounds", campgroundsRoutes);
