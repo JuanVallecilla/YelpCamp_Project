@@ -57,6 +57,10 @@ passport.deserializeUser(User.deserializeUser());
 
 // Middleware to have access to anything stored in the flash under the key success/error etc. this makes it so we dont have to pass anything to our templates
 app.use((req, res, next) => {
+  // ignores this path's in the array.. since we dont want the user to click log-in page to log-in and be redirected to log-in page again..that wont make sense.
+  if (!["/login", "/", "/register"].includes(req.originalUrl)) {
+    req.session.returnTo = req.originalUrl;
+  }
   res.locals.currentUser = req.user;
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
