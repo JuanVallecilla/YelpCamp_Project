@@ -1,0 +1,12 @@
+#formFile {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#formFile img {
+  height: 100px;
+  width: 149px;
+  border-radius: 4px;
+  margin: 5px;
+  opacity: 85%;
+}
