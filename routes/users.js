@@ -5,8 +5,11 @@ const catchAsync = require("../utils/catchAsync");
 const User = require("../models/user");
 const users = require("../controllers/users");
 
+const multer = require("multer");
+const { storage } = require("../cloudinary");
+const upload = multer({ storage });
 // Grouping similar routes together that have the same path.
-router.route("/register").get(users.renderRegister).post(catchAsync(users.register));
+router.route("/register").get(users.renderRegister).post(upload.single("avatar"), catchAsync(users.register));
 
 router
   .route("/login")
@@ -14,5 +17,7 @@ router
   .post(passport.authenticate("local", { failureFlash: true, failureRedirect: "/login" }), users.login);
 
 router.get("/logout", users.logout);
+
+router.route("/users/:id").get(catchAsync(users.userProfile));
 
 module.exports = router;
