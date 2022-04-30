@@ -1,32 +1,53 @@
 <% layout('layouts/boilerplate')%>
 <div id="cluster-map"></div>
-<div class="container">
-  <h1>All Campgrounds</h1>
 
-  <% for (let campground of campgrounds){%>
-  <div class="card mb-3">
-    <div class="row">
-      <div class="col-md-4">
+<div class="title">
+  <h1>All Campgrounds</h1>
+</div>
+
+<!-- <div class="container">
+  <div class="row text-center" style="display: flex; flex-wrap: wrap">
+    <% campgrounds.forEach(function(campground){ %>
+    <div class="col-md-4 col-sm-6">
+      <div class="card">
+        <img class="card-img" src="<%= campground.image %>" />
+        <div class="card-body">
+          <h4 class="card-title"><%= campground.name %></h4>
+          <h6 id="usrbrd" class="card-subtitle mb-2 text-muted"><%=campground.author.username%></h6>
+          <div id="brd"></div>
+          <p class="card-text text entryText"><%=campground.description%></p>
+        </div>
+        <p>
+          <a href="/campgrounds/<%= campground._id %>" class="btn btn-primary">More Info</a>
+        </p>
+      </div>
+    </div>
+    <% }); %>
+  </div>
+</div> -->
+
+<div class="container">
+  <div class="row text-center" style="display: flex; flex-wrap: wrap">
+    <% for (let campground of campgrounds){%>
+    <div class="col-sm-4 mb-3">
+      <div class="card">
         <% if(campground.images.length) {%>
         <img class="img-fluid" alt="" src="<%=campground.images[0].url%>" />
         <% } else { %>
         <img class="img-fluid" alt="" src="https://res.cloudinary.com/dswkd1tqw/image/upload/v1650925141/YelpCamp/181060_geifwq.webp" />
         <% } %>
-      </div>
-      <div class="col-md-8">
         <div class="card-body">
-          <h5 class="card-title"><%= campground.title %></h5>
-          <p class="card-text"><%= campground.description %></p>
-          <p class="card-text">
-            <small class="text-muted"><%= campground.location%></small>
-          </p>
+          <h5 class="card-title m-0"><%= campground.title %></h5>
+          <small class="text-muted"><%= campground.location%></small>
+          <p class="card-text"><%= campground.description.substring(0,100) %></p>
           <a class="btn btn-primary" href="/campgrounds/<%=campground._id%>">View <%=campground.title%></a>
         </div>
       </div>
     </div>
+    <%}%>
   </div>
-  <%}%>
 </div>
+
 <script>
   const mapToken = "<%-process.env.MAPBOX_TOKEN%>";
   const campgrounds =  {features: <%-JSON.stringify(campgrounds)%>};
