@@ -80,6 +80,8 @@ const scriptSrcUrls = [
   "https://cdnjs.cloudflare.com/",
   "https://cdn.jsdelivr.net/",
   "https://res.cloudinary.com/dswkd1tqw/",
+  "https://fonts.google.com/",
+  "https://fonts.gstatic.com",
 ];
 const styleSrcUrls = [
   "https://kit-free.fontawesome.com/",
@@ -89,10 +91,12 @@ const styleSrcUrls = [
   "https://fonts.googleapis.com/",
   "https://use.fontawesome.com/",
   "https://cdn.jsdelivr.net/",
+  "https://fonts.google.com/",
+  "https://fonts.gstatic.com",
   "https://res.cloudinary.com/dswkd1tqw/",
 ];
 const connectSrcUrls = ["https://*.tiles.mapbox.com", "https://api.mapbox.com", "https://events.mapbox.com", "https://res.cloudinary.com/dswkd1tqw/"];
-const fontSrcUrls = ["https://res.cloudinary.com/dswkd1tqw/"];
+const fontSrcUrls = ["https://res.cloudinary.com/dswkd1tqw/", "https://fonts.google.com/", "https://fonts.gstatic.com"];
 
 app.use(
   helmet.contentSecurityPolicy({
@@ -101,6 +105,7 @@ app.use(
       connectSrc: ["'self'", ...connectSrcUrls],
       scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
       styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+      fontSrc: ["'self'", "'unsafe-inline'"],
       scriptSrcAttr: ["'self'", "'unsafe-inline'"],
       workerSrc: ["'self'", "blob:"],
       objectSrc: [],
