@@ -23,6 +23,7 @@
       <a class="nav-link" href="/login">Login</a>
       <a class="nav-link" href="/register">Register</a>
       <% } else { %>
+      <li><a href="/users/<%=currentUser.id%>">Signed In As <%= currentUser.username %></a></li>
       <a class="nav-link" href="/logout">Logout</a>
       <% } %>
     </div>
