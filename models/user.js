@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
+const Review = require("./review");
 const Schema = mongoose.Schema;
+const { cloudinary } = require("../cloudinary");
 
 const passportLocalMongoose = require("passport-local-mongoose");
 
@@ -17,7 +19,7 @@ const UserSchema = new Schema({
   lastName: String,
   avatar: [ImageProfileSchema],
   phone: String,
-
+  bio: [String],
   email: {
     type: String,
     require: true,
@@ -45,5 +47,25 @@ UserSchema.post("save", function (error, doc, next) {
     next(error);
   }
 });
+
+// userSchema.post("findOneAndDelete", async function (campground) {
+//   //delete all related reviews
+//   if (campground.reviews) {
+//     await Review.deleteMany({
+//       _id: {
+//         $in: campground.reviews,
+//       },
+//     });
+//   }
+//   //delete all related campgrounds
+//   await Campground.deleteMany(campground.author._id);
+
+//   //delete images on cloudinary
+//   if (campground.images) {
+//     for (const img of campground.images) {
+//       await cloudinary.uploader.destroy(img.filename);
+//     }
+//   }
+// });
 
 module.exports = mongoose.model("User", UserSchema);
