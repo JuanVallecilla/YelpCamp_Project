@@ -51,3 +51,20 @@ module.exports.validateReview = (req, res, next) => {
     next();
   }
 };
+
+module.exports.checkProfileOwner = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    // If the profiles can be visited from the comments page, you can use the comment.author.id in an <a> tag to pass the the link into params as 'userid' for example
+    // If profile is clickable as a campground author, you can use campground.author.id in an <a> tag to pass the the link into params as 'userid' for example
+
+    if (req.user._id.equals(req.params.id || req.isAuthenticated())) {
+      next();
+    } else {
+      req.flash("error", "Access denied, this is not your profile.");
+      res.redirect("back");
+    }
+  } else {
+    req.flash("error", "You are not logged in.");
+    res.redirect("back");
+  }
+};
