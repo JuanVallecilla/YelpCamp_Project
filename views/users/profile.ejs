@@ -1,17 +1,82 @@
 <% layout('layouts/boilerplate')%>
+<link rel="stylesheet" href="/stylesheets/profile.css" />
 
-<div class="row">
-  <div class="col-md-4">
-    <h1><%= user.firstName + " " + user.lastName + "" %></h1>
-    <div class="thumbnail">
-      <img src="<%= user.avatar[0].url %> " alt="user profile image" />
-      <div class="caption"><a href="mailto:<%= user.email %>"><%= user.email %></a></div>
-    </div>
-    <div class="col-md-8">
-      <h3><%= user.username %>'s campgrounds:</h3>
-      <% for (let campground of campgrounds) { %>
-      <li><a href="/campgrounds/<%= campground.id %>"> <%= campground.title %> </a></li>
-      <% } %>
+<section class="gradient-custom-2 mb-5">
+  <div class="container">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col col-lg-9 col-xl-7">
+        <div class="card">
+          <div class="rounded-top text-white d-flex flex-row" style="background-color: #000; height: 200px">
+            <div class="ms-4 mt-5 d-flex flex-column">
+              <img
+                src="<%= user.avatar[0].url %>"
+                alt="Generic placeholder image"
+                class="img-fluid img-thumbnail mt-4 mb-2"
+                style="width: 150px; z-index: 1"
+              />
+              <a
+                class="btn btn-outline-dark"
+                type="button"
+                data-mdb-ripple-color="dark"
+                style="z-index: 1"
+                href="/users/<%= user._id %>/edit"
+                role="button"
+                >Edit Profile</a
+              >
+            </div>
+            <div class="ms-3" style="margin-top: 130px">
+              <h5><%= user.firstName + " " + user.lastName %></h5>
+              <p><%= user.email%></p>
+            </div>
+          </div>
+          <div class="p-4 text-black" style="background-color: #f8f9fa">
+            <div class="d-flex justify-content-end text-center py-1">
+              <div>
+                <p class="mb-1 h5"><%= review.length %></p>
+                <p class="small text-muted mb-0">Reviews</p>
+              </div>
+              <div class="px-3">
+                <p class="mb-1 h5"><%= campground.length%></p>
+                <p class="small text-muted mb-0">Campgrounds</p>
+              </div>
+            </div>
+          </div>
+          <div class="card-body p-4 text-black">
+            <div class="mb-5">
+              <p class="lead fw-normal mb-1">About</p>
+              <div class="p-4">
+                <p class="font-italic mb-1"><%= user.bio %></p>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <p class="lead fw-normal mb-0"><%= user.username %>'s campgrounds:</p>
+              <p class="mb-0"><a href="#!" class="text-muted">Show all</a></p>
+            </div>
+
+            <div class="row">
+              <div class="col">
+                <% for (let campgrounds of campground) { %>
+                <ul>
+                  <a href="/campgrounds/<%= campgrounds.id %>"> <%= campgrounds.title %></a>
+                </ul>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</div>
+</section>
+<!-- <div class="col-md-3">
+  <h5>Actions</h5>
+  <% if(currentUser && user._id.equals(currentUser._id) || currentUser && currentUser.isAdmin){ %>
+  <div class="text-center">
+    <span class="inline">
+      <form action="/users/<%=user.id%>?_method=DELETE" method="POST">
+        <button class="btn btn-danger userbtn">Delete</button>
+      </form>
+    </span>
+  </div>
+  <% } %>
+</div> -->
