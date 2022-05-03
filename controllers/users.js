@@ -1,5 +1,4 @@
 const User = require("../models/user");
-const { cloudinary } = require("../cloudinary");
 const Campground = require("../models/campground");
 const Review = require("../models/review");
 
@@ -14,6 +13,10 @@ module.exports.register = async (req, res, next) => {
 
     // if user does not  submit an avatar image we give him a default avatar
     if (!req.file) {
+      user.avatar = {
+        url: "https://res.cloudinary.com/dswkd1tqw/image/upload/v1651312459/YelpCamp/default%20Avatar.png",
+        filename: "default Avatar",
+      };
     } else {
       user.avatar = {
         url: req.file.path,
@@ -60,12 +63,51 @@ module.exports.userProfile = async (req, res) => {
   }
 
   const campground = await Campground.find().where("author").equals(user._id);
-  const reviews = await Review.find().where("user").equals(user._id);
+  const review = await Review.find().where("author").equals(user._id);
+  //user.review = campground.reviews;
+
   // const campground = await Campground.find().where("author").equals(req.user._id);
   // const reviews = await Review.find().where("user").equals(req.user._id);
   if (!campground) {
     req.flash("error", "Cannot find Campgrounds!");
     return res.redirect("/campgrounds");
   }
-  res.render("users/profile", { user, campgrounds: campground, reviews: reviews });
+
+  res.render("users/profile", { user, campground, review });
 };
+
+module.exports.renderEditProfile = async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findById(id);
+  const review = await Review.find().where("author").equals(user._id);
+  const campground = await Campground.find().where("author").equals(user._id);
+
+  if (!user) {
+    req.flash("error", "That user doesnt exist");
+    res.redirect("back");
+  } else {
+    res.render("users/edit", { user, review, campground });
+  }
+};
+
+module.exports.updateProfile = async (req, res) => {
+  console.log(req.body.user);
+  const { id } = req.params;
+  const user = await User.findByIdAndUpdate(id, { ...req.body.user });
+  await user.save();
+
+  if (!user) {
+    req.flash("error", "Invalid User");
+    res.redirect("back");
+  } else {
+    req.flash("success", "Successfully Updated Campground!");
+    res.redirect(`/users/${user._id}`);
+  }
+};
+
+// module.exports.deleteUser = async (req, res) => {
+//   const { id } = req.params;
+//   await User.findByIdAndDelete(id);
+//   req.flash("success", "Succesfully deleted campground!");
+//   res.redirect("/campgrounds");
+// };
