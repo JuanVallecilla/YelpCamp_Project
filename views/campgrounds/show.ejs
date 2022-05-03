@@ -5,9 +5,12 @@
   <div class="col-6">
     <div id="campgroundCarousel" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-inner">
-        <% campground.images.forEach((img, i) => { %>
+        <% if(campground.images.length==0) {%>
+        <img class="img-thumbnail" alt="" src="https://res.cloudinary.com/dswkd1tqw/image/upload/v1651470970/YelpCamp/tent_rn1yyv.jpg" />
+
+        <% } %> <% campground.images.forEach((img, i) => { %>
         <div class="carousel-item <%= i === 0 ? 'active' : ''%>">
-          <img src="<%= img.cardImage%>" class="d-block w-100" alt="" />
+          <img src="<%= img.cardImage%>" class="img-thumbnail w-100" alt="" />
         </div>
         <% }) %>
       </div>
