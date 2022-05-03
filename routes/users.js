@@ -4,6 +4,7 @@ const passport = require("passport");
 const catchAsync = require("../utils/catchAsync");
 const User = require("../models/user");
 const users = require("../controllers/users");
+const { isLoggedIn, checkProfileOwner } = require("../middleware");
 
 const multer = require("multer");
 const { storage } = require("../cloudinary");
@@ -18,6 +19,11 @@ router
 
 router.get("/logout", users.logout);
 
-router.route("/users/:id").get(catchAsync(users.userProfile));
+router
+  .route("/users/:id")
+  .get(isLoggedIn, checkProfileOwner, catchAsync(users.userProfile))
+  .put(isLoggedIn, checkProfileOwner, catchAsync(users.updateProfile));
+
+router.route("/users/:id/edit").get(isLoggedIn, checkProfileOwner, catchAsync(users.renderEditProfile));
 
 module.exports = router;
