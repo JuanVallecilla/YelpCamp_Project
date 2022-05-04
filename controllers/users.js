@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const Campground = require("../models/campground");
 const Review = require("../models/review");
+const { cloudinary } = require("../cloudinary");
 
 module.exports.renderRegister = (req, res) => {
   res.render("users/register");
@@ -64,6 +65,7 @@ module.exports.userProfile = async (req, res) => {
 
   const campground = await Campground.find().where("author").equals(user._id);
   const review = await Review.find().where("author").equals(user._id);
+
   //user.review = campground.reviews;
 
   // const campground = await Campground.find().where("author").equals(req.user._id);
@@ -81,7 +83,6 @@ module.exports.renderEditProfile = async (req, res) => {
   const user = await User.findById(id);
   const review = await Review.find().where("author").equals(user._id);
   const campground = await Campground.find().where("author").equals(user._id);
-
   if (!user) {
     req.flash("error", "That user doesnt exist");
     res.redirect("back");
@@ -91,7 +92,6 @@ module.exports.renderEditProfile = async (req, res) => {
 };
 
 module.exports.updateProfile = async (req, res) => {
-  console.log(req.body.user);
   const { id } = req.params;
   const user = await User.findByIdAndUpdate(id, { ...req.body.user });
   await user.save();
@@ -105,9 +105,21 @@ module.exports.updateProfile = async (req, res) => {
   }
 };
 
-// module.exports.deleteUser = async (req, res) => {
-//   const { id } = req.params;
-//   await User.findByIdAndDelete(id);
-//   req.flash("success", "Succesfully deleted campground!");
-//   res.redirect("/campgrounds");
-// };
+module.exports.deleteUser = async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findById(id);
+  const review = await Review.find().where("author").equals(user._id);
+  await Review.findByIdAndDelete(review);
+  const campground = await Campground.find().where("author").equals(user._id);
+  await Campground.findByIdAndDelete(campground);
+  await User.findByIdAndDelete(user);
+
+  if (user.avatar) {
+    for (const img of user.avatar) {
+      await cloudinary.uploader.destroy(img.filename);
+    }
+  }
+
+  req.flash("success", "Succesfully deleted User!");
+  res.redirect("/campgrounds");
+};
