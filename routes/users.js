@@ -22,7 +22,8 @@ router.get("/logout", users.logout);
 router
   .route("/users/:id")
   .get(isLoggedIn, checkProfileOwner, catchAsync(users.userProfile))
-  .put(isLoggedIn, checkProfileOwner, catchAsync(users.updateProfile));
+  .put(isLoggedIn, checkProfileOwner, catchAsync(users.updateProfile))
+  .delete(isLoggedIn, checkProfileOwner, catchAsync(users.deleteUser));
 
 router.route("/users/:id/edit").get(isLoggedIn, checkProfileOwner, catchAsync(users.renderEditProfile));
 
