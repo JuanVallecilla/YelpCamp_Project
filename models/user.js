@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const Campground = require("./campground");
+const Review = require("./review");
 
 const passportLocalMongoose = require("passport-local-mongoose");
 
@@ -33,6 +35,12 @@ const UserSchema = new Schema({
       ref: "Review",
     },
   ],
+  campgrounds: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Campground",
+    },
+  ],
 });
 
 UserSchema.plugin(passportLocalMongoose);
@@ -43,6 +51,16 @@ UserSchema.post("save", function (error, doc, next) {
     next(new Error("Email address was already taken, please choose a different one."));
   } else {
     next(error);
+  }
+});
+
+UserSchema.post("remove", async function (campground) {
+  await Review.deleteMany({ author: this._id });
+  await Campground.deleteMany({ author: this._id });
+  if (campground.images) {
+    for (const img of campground.images) {
+      await cloudinary.uploader.destroy(img.filename);
+    }
   }
 });
 
