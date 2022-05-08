@@ -57,7 +57,6 @@ module.exports.logout = (req, res) => {
 module.exports.userProfile = async (req, res) => {
   const { id } = req.params;
   const user = await User.findById(id);
-
   if (!user) {
     req.flash("error", "Cannot find User!");
     return res.redirect("/campgrounds");
@@ -65,7 +64,6 @@ module.exports.userProfile = async (req, res) => {
 
   const campground = await Campground.find().where("author").equals(user._id);
   const review = await Review.find().where("author").equals(user._id);
-
   //user.review = campground.reviews;
 
   // const campground = await Campground.find().where("author").equals(req.user._id);
@@ -83,6 +81,7 @@ module.exports.renderEditProfile = async (req, res) => {
   const user = await User.findById(id);
   const review = await Review.find().where("author").equals(user._id);
   const campground = await Campground.find().where("author").equals(user._id);
+
   if (!user) {
     req.flash("error", "That user doesnt exist");
     res.redirect("back");
@@ -94,6 +93,22 @@ module.exports.renderEditProfile = async (req, res) => {
 module.exports.updateProfile = async (req, res) => {
   const { id } = req.params;
   const user = await User.findByIdAndUpdate(id, { ...req.body.user });
+  // If user submits the form we want to first delete the old photo then replace
+
+  // if user does not  submit an avatar image we do nothing else we replace
+  if (!req.file) {
+  } else {
+    if (user.avatar) {
+      for (const img of user.avatar) {
+        await cloudinary.uploader.destroy(img.filename);
+      }
+    }
+    user.avatar = {
+      url: req.file.path,
+      filename: req.file.filename,
+    };
+  }
+
   await user.save();
 
   if (!user) {
@@ -108,16 +123,23 @@ module.exports.updateProfile = async (req, res) => {
 module.exports.deleteUser = async (req, res) => {
   const { id } = req.params;
   const user = await User.findById(id);
-  const review = await Review.find().where("author").equals(user._id);
-  await Review.findByIdAndDelete(review);
   const campground = await Campground.find().where("author").equals(user._id);
-  await Campground.findByIdAndDelete(campground);
-  await User.findByIdAndDelete(user);
-
-  if (user.avatar) {
-    for (const img of user.avatar) {
-      await cloudinary.uploader.destroy(img.filename);
+  const campgrounds = await Campground.findById(campground);
+  if (campground.length == 0) {
+    user.remove();
+    if (user.avatar) {
+      for (const img of user.avatar) {
+        await cloudinary.uploader.destroy(img.filename);
+      }
     }
+  } else {
+    await Campground.findByIdAndDelete(campgrounds);
+    if (user.avatar) {
+      for (const img of user.avatar) {
+        await cloudinary.uploader.destroy(img.filename);
+      }
+    }
+    user.remove();
   }
 
   req.flash("success", "Succesfully deleted User!");
