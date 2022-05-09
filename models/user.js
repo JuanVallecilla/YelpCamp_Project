@@ -19,7 +19,7 @@ const UserSchema = new Schema({
   lastName: String,
   avatar: [ImageProfileSchema],
   phone: String,
-  bio: [String],
+  bio: String,
   isAdmin: {
     type: Boolean,
     default: false,
