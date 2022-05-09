@@ -18,6 +18,7 @@ const helmet = require("helmet");
 const userRoutes = require("./routes/users");
 const campgroundsRoutes = require("./routes/campgrounds");
 const reviewsRoutes = require("./routes/reviews");
+const userAdminRoute = require("./routes/admin");
 const mongoSanitize = require("express-mongo-sanitize");
 const MongoStore = require("connect-mongo");
 
@@ -154,6 +155,7 @@ app.use((req, res, next) => {
   next();
 });
 // Router Handlers
+app.use("/", userAdminRoute);
 app.use("/", userRoutes);
 app.use("/campgrounds", campgroundsRoutes);
 app.use("/campgrounds/:id/reviews", reviewsRoutes);
