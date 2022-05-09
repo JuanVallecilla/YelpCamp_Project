@@ -97,7 +97,7 @@ const styleSrcUrls = [
   "https://res.cloudinary.com/dswkd1tqw/",
 ];
 const connectSrcUrls = ["https://*.tiles.mapbox.com", "https://api.mapbox.com", "https://events.mapbox.com", "https://res.cloudinary.com/dswkd1tqw/"];
-const fontSrcUrls = ["https://res.cloudinary.com/dswkd1tqw/", "https://fonts.google.com/", "https://fonts.gstatic.com"];
+const fontSrcUrls = ["https://res.cloudinary.com/dswkd1tqw/", "https://fonts.google.com/", "https://fonts.gstatic.com", "https://cdn.jsdelivr.net/"];
 
 app.use(
   helmet.contentSecurityPolicy({
