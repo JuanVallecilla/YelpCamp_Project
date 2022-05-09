@@ -1,1 +1,29 @@
 <% layout('layouts/boilerplate')%>
+<link rel="stylesheet" href="/stylesheets/admin.css" />
+
+<div class="row text-center">
+  <div class="col-xs-12">
+    <h1 class="">Admin Control Panel</h1>
+    <h2 class="lead"><i class="bi bi-unlock-fill"></i> Denotes User is Admin</h2>
+    <h2 class="lead"><i class="bi bi-lock-fill" aria-hidden="true"></i> Denotes User is not Admin</h2>
+  </div>
+</div>
+<% for(user of users) { %>
+
+<div class="row text-center mb-2">
+  <div class="col-md-2 test">
+    <% if(user.isAdmin) {%>
+    <h5><a href="/users/<%=user.id%>"><%= user.firstName + " " + user.lastName %> </a><i class="bi bi-unlock-fill" aria-hidden="true"></i></h5>
+    <% }else{ %>
+    <h5><a href="/users/<%=user.id%>"><%= user.firstName + " " + user.lastName %> </a><i class="bi bi-lock-fill" aria-hidden="true"></i></h5>
+    <% } %>
+    <div class="row">
+      <div class="col">
+        <div class="img-thumbnail mb-4">
+          <img src="<%= user.avatar[0].url %>" alt="Generic placeholder image" class="img-fluid" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<% } %>
