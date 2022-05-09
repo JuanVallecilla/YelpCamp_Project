@@ -2,6 +2,7 @@ const User = require("../models/user");
 const Campground = require("../models/campground");
 const Review = require("../models/review");
 const { cloudinary } = require("../cloudinary");
+const ADMIN_SECRET = process.env.ADMIN_SECRET;
 
 module.exports.renderRegister = (req, res) => {
   res.render("users/register");
@@ -9,8 +10,12 @@ module.exports.renderRegister = (req, res) => {
 
 module.exports.register = async (req, res, next) => {
   try {
-    const { email, username, password, firstName, lastName, phone, avatar } = req.body;
-    const user = new User({ email, username, firstName, lastName, phone, avatar });
+    const { email, username, password, firstName, lastName, phone, avatar, adminCode } = req.body;
+    const user = new User({ email, username, firstName, lastName, phone, avatar, adminCode });
+
+    if (adminCode === ADMIN_SECRET) {
+      user.isAdmin = true;
+    }
 
     // if user does not  submit an avatar image we give him a default avatar
     if (!req.file) {
@@ -24,6 +29,7 @@ module.exports.register = async (req, res, next) => {
         filename: req.file.filename,
       };
     }
+
     const registerUser = await User.register(user, password);
     // Allows the user to automatically ne log-in after registering
     req.login(registerUser, (err) => {
@@ -83,7 +89,7 @@ module.exports.renderEditProfile = async (req, res) => {
   const campground = await Campground.find().where("author").equals(user._id);
 
   if (!user) {
-    req.flash("error", "That user doesnt exist");
+    req.flash("error", "That user doesn't exist");
     res.redirect("back");
   } else {
     res.render("users/edit", { user, review, campground });
@@ -115,7 +121,7 @@ module.exports.updateProfile = async (req, res) => {
     req.flash("error", "Invalid User");
     res.redirect("back");
   } else {
-    req.flash("success", "Successfully Updated Campground!");
+    req.flash("success", "Successfully Updated Profile!");
     res.redirect(`/users/${user._id}`);
   }
 };
