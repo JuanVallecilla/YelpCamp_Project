@@ -20,6 +20,10 @@ const UserSchema = new Schema({
   avatar: [ImageProfileSchema],
   phone: String,
   bio: [String],
+  isAdmin: {
+    type: Boolean,
+    default: false,
+  },
   email: {
     type: String,
     require: true,
