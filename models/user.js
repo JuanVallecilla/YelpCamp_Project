@@ -45,9 +45,8 @@ const UserSchema = new Schema({
       ref: "Campground",
     },
   ],
+  createdAt: { type: Date, default: Date.now },
 });
-
-UserSchema.plugin(passportLocalMongoose);
 
 // handling the unique email error
 UserSchema.post("save", function (error, doc, next) {
@@ -67,5 +66,7 @@ UserSchema.post("remove", async function (campground) {
     }
   }
 });
+
+UserSchema.plugin(passportLocalMongoose);
 
 module.exports = mongoose.model("User", UserSchema);
