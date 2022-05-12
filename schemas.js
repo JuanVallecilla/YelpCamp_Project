@@ -39,3 +39,27 @@ module.exports.reviewSchema = Joi.object({
     body: Joi.string().required().escapeHTML(),
   }).required(),
 });
+
+module.exports.userSchema = Joi.object({
+  user: Joi.object({
+    firstName: Joi.string().required().escapeHTML(),
+    lastName: Joi.string().required().escapeHTML(),
+    email: Joi.string().required().escapeHTML(),
+    phone: Joi.string().allow("").escapeHTML(),
+    bio: Joi.string().allow("").escapeHTML(),
+  }),
+});
+
+module.exports.userSchemaRegister = Joi.object({
+  firstName: Joi.string().required().escapeHTML(),
+  lastName: Joi.string().required().escapeHTML(),
+  email: Joi.string().required().escapeHTML(),
+  phone: Joi.string().allow("").escapeHTML(),
+  username: Joi.string().required().escapeHTML(),
+  password: Joi.string().required().escapeHTML(),
+  adminCode: Joi.string().allow("").escapeHTML(),
+});
+
+module.exports.adminSchema = Joi.object({
+  makeAdmin: Joi.string(),
+});
