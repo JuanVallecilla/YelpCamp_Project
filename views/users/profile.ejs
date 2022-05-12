@@ -17,8 +17,8 @@
                 data-mdb-ripple-color="dark"
                 href="/users/<%= user._id %>/edit"
                 role="button"
-                >Edit Profile</a
-              >
+                >Edit Profile <i class="bi bi-pencil-square"></i
+              ></a>
               <% } %>
             </div>
             <div class="ms-3" id="name">
@@ -71,19 +71,3 @@
     </div>
   </div>
 </section>
-
-<!-- <div class="col-md-3"> -->
-<!-- Will add isAdmin function later for now  currentUser && currentUser.isAdmin does not run -->
-<!-- <% if(currentUser && user._id.equals(currentUser._id) || currentUser && currentUser.isAdmin){ %>
-  <div class="text-center">
-    <form
-      action="/users/<%=user._id%>?_method=DELETE"
-      method="POST"
-      onsubmit="return confirm('You are about to delete your profile! are you sure?') "
-      id="btnDelete"
-    >
-      <button class="btn btn-danger userbtn">Delete Profile</button>
-    </form>
-  </div>
-  <% } %>
-</div> -->
