@@ -4,8 +4,11 @@ const passport = require("passport");
 const catchAsync = require("../utils/catchAsync");
 const User = require("../models/user");
 const users = require("../controllers/admin");
-const { isLoggedIn, checkProfileOwner } = require("../middleware");
+const admin = require("../controllers/admin");
+const { isLoggedIn, checkProfileOwner, isAdmin, validateEditUser, validateEditAdmin } = require("../middleware");
 
-router.route("/admin").get(users.userAdmin);
+router.route("/admin").get(isAdmin, catchAsync(admin.userAdmin));
+
+router.route("/users/:id").put(isAdmin, validateEditAdmin, catchAsync(admin.updateAdmin));
 
 module.exports = router;
