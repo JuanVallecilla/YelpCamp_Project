@@ -1,7 +1,8 @@
-const { campgroundSchema, reviewSchema } = require("./schemas.js");
+const { campgroundSchema, reviewSchema, userSchema, userSchemaRegister, adminSchema } = require("./schemas.js");
 const ExpressError = require("./utils/ExpressError");
 const Campground = require("./models/campground");
 const Review = require("./models/review");
+const User = require("./models/user");
 
 module.exports.isLoggedIn = (req, res, next) => {
   if (!req.isAuthenticated()) {
@@ -68,5 +69,57 @@ module.exports.checkProfileOwner = (req, res, next) => {
   } else {
     req.flash("error", "You are not logged in.");
     res.redirect("back");
+  }
+};
+
+module.exports.validateEditUser = (req, res, next) => {
+  const { error } = userSchema.validate(req.body);
+
+  if (error) {
+    const msg = error.details.map((elements) => elements.message).join("");
+    throw new ExpressError(msg, 400);
+  } else {
+    next();
+  }
+};
+
+module.exports.validateEditAdmin = (req, res, next) => {
+  const { error } = adminSchema.validate(req.body);
+
+  if (error) {
+    const msg = error.details.map((elements) => elements.message).join("");
+    throw new ExpressError(msg, 400);
+  } else {
+    next();
+  }
+};
+
+module.exports.validateUserRegister = (req, res, next) => {
+  const { error } = userSchemaRegister.validate(req.body);
+
+  if (error) {
+    const msg = error.details.map((elements) => elements.message).join("");
+    throw new ExpressError(msg, 400);
+  } else {
+    next();
+  }
+};
+
+module.exports.isAdmin = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    if (!req.user) {
+      req.flash("error", "No User Found");
+      req.redirect("/campgrounds");
+    } else {
+      if (req.user.isAdmin) {
+        next();
+      } else {
+        req.flash("error", "You do not have permission to do that");
+        res.redirect("/campgrounds");
+      }
+    }
+  } else {
+    req.flash("error", "You need to be logged in to do that.");
+    res.redirect("/campgrounds");
   }
 };
