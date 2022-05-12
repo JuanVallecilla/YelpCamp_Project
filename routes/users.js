@@ -4,13 +4,13 @@ const passport = require("passport");
 const catchAsync = require("../utils/catchAsync");
 const User = require("../models/user");
 const users = require("../controllers/users");
-const { isLoggedIn, checkProfileOwner } = require("../middleware");
+const { isLoggedIn, checkProfileOwner, validateEditUser, validateUserRegister } = require("../middleware");
 
 const multer = require("multer");
 const { storage } = require("../cloudinary");
 const upload = multer({ storage });
 // Grouping similar routes together that have the same path.
-router.route("/register").get(users.renderRegister).post(upload.single("avatar"), catchAsync(users.register));
+router.route("/register").get(users.renderRegister).post(upload.single("avatar"), validateUserRegister, catchAsync(users.register));
 
 router
   .route("/login")
@@ -22,7 +22,7 @@ router.get("/logout", users.logout);
 router
   .route("/users/:id")
   .get(isLoggedIn, catchAsync(users.userProfile))
-  .put(isLoggedIn, checkProfileOwner, upload.single("avatar"), catchAsync(users.updateProfile))
+  .put(isLoggedIn, checkProfileOwner, upload.single("avatar"), validateEditUser, catchAsync(users.updateProfile))
   .delete(isLoggedIn, checkProfileOwner, catchAsync(users.deleteUser));
 
 router.route("/users/:id/edit").get(isLoggedIn, checkProfileOwner, catchAsync(users.renderEditProfile));
