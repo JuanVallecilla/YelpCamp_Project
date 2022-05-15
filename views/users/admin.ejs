@@ -8,7 +8,8 @@
     <h2 class="lead"><i class="bi bi-lock-fill" aria-hidden="true"></i> Denotes User is not Admin</h2>
   </div>
 </div>
-<% for(user of users.slice(1)) { %>
+<% for(user of users.slice(1)) { %> <% if(currentUser == currentUser.admin) { %> <%= user.slice() %> <% } %>
+
 <div class="card w-50 mx-auto mb-4">
   <div class="card-header text-center">
     <% if(user.isAdmin) {%>
