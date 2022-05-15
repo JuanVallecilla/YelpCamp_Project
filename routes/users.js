@@ -4,7 +4,9 @@ const passport = require("passport");
 const catchAsync = require("../utils/catchAsync");
 const User = require("../models/user");
 const users = require("../controllers/users");
-const { isLoggedIn, checkProfileOwner, validateEditUser, validateUserRegister } = require("../middleware");
+const admin = require("../controllers/admin");
+
+const { isLoggedIn, checkProfileOwner, validateEditUser, validateUserRegister, isAdmin, validateEditAdmin } = require("../middleware");
 
 const multer = require("multer");
 const { storage } = require("../cloudinary");
@@ -23,6 +25,7 @@ router
   .route("/users/:id")
   .get(isLoggedIn, catchAsync(users.userProfile))
   .put(isLoggedIn, checkProfileOwner, upload.single("avatar"), validateEditUser, catchAsync(users.updateProfile))
+  .put(isLoggedIn, isAdmin, validateEditAdmin, catchAsync(admin.updateAdmin))
   .delete(isLoggedIn, checkProfileOwner, catchAsync(users.deleteUser));
 
 router.route("/users/:id/edit").get(isLoggedIn, checkProfileOwner, catchAsync(users.renderEditProfile));
