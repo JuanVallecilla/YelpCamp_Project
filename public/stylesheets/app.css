@@ -8,6 +8,13 @@
   height: 300px;
 }
 
+h5 > a {
+  color: black;
+}
+
+.alert {
+  z-index: 1;
+}
 .title {
   text-align: center;
 }
@@ -16,11 +23,11 @@
   margin: 20px 0px;
 }
 
-#camp-cards {
+/* #camp-cards {
   min-height: 460px;
-}
+} */
 
-#camp-images {
+#camp-images > img {
   width: 410px;
   height: 270px;
 }
@@ -29,4 +36,48 @@
   font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
     "Segoe UI Symbol", "Noto Color Emoji";
   font-weight: 400;
+}
+
+a {
+  color: rgba(25, 135, 84, 1);
+}
+
+a:hover {
+  color: rgba(25, 135, 84, 0.5);
+}
+
+.nav-link {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.nav-link:hover {
+  color: rgba(255, 255, 255, 0.7);
+  border-bottom-color: rgba(255, 255, 255, 0.5);
+}
+
+.nav-link.active {
+  color: white;
+  border-bottom-color: white;
+}
+
+nav .dropdown-item {
+  color: rgba(255, 255, 255, 0.5);
+}
+/* pagination  */
+.page-link {
+  color: #198754;
+}
+page-item.active .page-link {
+  color: white;
+  background-color: #198754;
+  border-color: #198754;
+}
+
+.container > .campgrounds {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card > img {
+  border-radius: 3px;
 }
