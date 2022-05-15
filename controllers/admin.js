@@ -20,7 +20,6 @@ module.exports.updateAdmin = async (req, res) => {
   const { id } = req.params;
   const users = await User.find({});
   const user = await User.findByIdAndUpdate(id, { ...req.body.user });
-  console.log(user);
   if (!user) {
     req.flash("error", "Invalid User");
     res.redirect("/admin");
