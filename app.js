@@ -22,6 +22,8 @@ const userAdminRoute = require("./routes/admin");
 const mongoSanitize = require("express-mongo-sanitize");
 const MongoStore = require("connect-mongo");
 
+const { scriptSrcUrls, styleSrcUrls, connectSrcUrls, fontSrcUrls } = require("./utils/cps");
+
 // const dbUrl = process.env.DB_URL;
 
 const dbUrl = "mongodb://localhost:27017/yelp-camp";
@@ -72,32 +74,6 @@ const sessionConfig = {
 
 app.use(session(sessionConfig));
 app.use(flash());
-
-const scriptSrcUrls = [
-  "https://stackpath.bootstrapcdn.com/",
-  "https://api.tiles.mapbox.com/",
-  "https://api.mapbox.com/",
-  "https://kit.fontawesome.com/",
-  "https://cdnjs.cloudflare.com/",
-  "https://cdn.jsdelivr.net/",
-  "https://res.cloudinary.com/dswkd1tqw/",
-  "https://fonts.google.com/",
-  "https://fonts.gstatic.com",
-];
-const styleSrcUrls = [
-  "https://kit-free.fontawesome.com/",
-  "https://stackpath.bootstrapcdn.com/",
-  "https://api.mapbox.com/",
-  "https://api.tiles.mapbox.com/",
-  "https://fonts.googleapis.com/",
-  "https://use.fontawesome.com/",
-  "https://cdn.jsdelivr.net/",
-  "https://fonts.google.com/",
-  "https://fonts.gstatic.com",
-  "https://res.cloudinary.com/dswkd1tqw/",
-];
-const connectSrcUrls = ["https://*.tiles.mapbox.com", "https://api.mapbox.com", "https://events.mapbox.com", "https://res.cloudinary.com/dswkd1tqw/"];
-const fontSrcUrls = ["https://res.cloudinary.com/dswkd1tqw/", "https://fonts.google.com/", "https://fonts.gstatic.com", "https://cdn.jsdelivr.net/"];
 
 app.use(
   helmet.contentSecurityPolicy({
