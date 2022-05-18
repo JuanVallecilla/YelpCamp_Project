@@ -8,8 +8,7 @@
     <h2 class="lead"><i class="bi bi-lock-fill" aria-hidden="true"></i> Denotes User is not Admin</h2>
   </div>
 </div>
-<% for(user of users.slice(1)) { %> <% if(currentUser == currentUser.admin) { %> <%= user.slice() %> <% } %>
-
+<% for(user of users.slice(1)) { %>
 <div class="card w-50 mx-auto mb-4">
   <div class="card-header text-center">
     <% if(user.isAdmin) {%>
@@ -25,20 +24,20 @@
     <div class="card-body">
       <h4 class="card-text">Actions:</h4>
 
-      <% if(!user.isAdmin) { %>
+      <% if(user.isAdmin) { %>
       <div class="form-check form-switch">
-        <form action="/users/<%=user.id%>?_method=PUT" method="POST">
-          <label class="form-check-label" for="makeAdmin">Toggle switch to make user admin</label>
-          <input class="form-check-input" type="checkbox" id="check" name="makeAdmin" onchange="this.form.submit();" />
+        <form action="/admin/<%=user.id%>?_method=PUT" method="POST">
+          <label class="form-check-label" for="makeAdmin">Toggle switch to remove admin rights</label>
+          <input class="form-check-input" type="checkbox" id="check" name="makeAdmin" onchange="this.form.submit();" checked />
           <!-- <button class="btn btn-warning" type="submit">Make Admin</button> -->
         </form>
       </div>
 
-      <% } else if(user.isAdmin) { %>
+      <% } else { %>
       <div class="form-check form-switch">
-        <form action="/users/<%=user.id%>?_method=PUT" method="POST">
-          <label class="form-check-label" for="makeAdmin">Toggle to make user non-admin</label>
-          <input class="form-check-input" type="checkbox" id="check" name="makeAdmin" onchange="this.form.submit();" checked />
+        <form action="/admin/<%=user.id%>?_method=PUT" method="POST">
+          <label class="form-check-label" for="makeAdmin">Toggle to give user admin rights</label>
+          <input class="form-check-input" type="checkbox" id="check" name="makeAdmin" onchange="this.form.submit();" />
           <!-- <button class="btn btn-warning" type="submit">Make Admin</button> -->
         </form>
       </div>
