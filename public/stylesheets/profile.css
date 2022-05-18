@@ -51,3 +51,7 @@ img {
 #name {
   margin-top: 120px;
 }
+
+#bio {
+  white-space: pre-line;
+}
