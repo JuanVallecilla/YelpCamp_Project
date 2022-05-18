@@ -83,17 +83,6 @@ module.exports.validateEditUser = (req, res, next) => {
   }
 };
 
-module.exports.validateEditAdmin = (req, res, next) => {
-  const { error } = adminSchema.validate(req.body);
-
-  if (error) {
-    const msg = error.details.map((elements) => elements.message).join("");
-    throw new ExpressError(msg, 400);
-  } else {
-    next();
-  }
-};
-
 module.exports.validateUserRegister = (req, res, next) => {
   const { error } = userSchemaRegister.validate(req.body);
 

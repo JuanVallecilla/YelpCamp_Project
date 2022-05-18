@@ -59,7 +59,3 @@ module.exports.userSchemaRegister = Joi.object({
   password: Joi.string().required().escapeHTML(),
   adminCode: Joi.string().allow("").escapeHTML(),
 });
-
-module.exports.adminSchema = Joi.object({
-  makeAdmin: Joi.string(),
-});
