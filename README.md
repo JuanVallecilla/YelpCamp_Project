@@ -3,7 +3,7 @@ My Version of YelpCamp- from the Web Developer Bootcamp 2022 by Colt Steele: htt
 
 YelpCamp allows users to create/review campgrounds, In order to create or review campgrounds users must have an account.
 
-This Project was created using Node.js, Express, MongoDB Bootstrap and Passport.js to handle authentication.
+This Project was created using Node.js, Express, MongoDB, Bootstrap and Passport.js to handle authentication.
 
 Website deployed on Heroku: https://damp-bastion-63286.herokuapp.com/
 
