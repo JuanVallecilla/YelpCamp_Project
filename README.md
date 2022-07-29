@@ -1,5 +1,5 @@
 ﻿# YelpCamp_Project
-My Version of YelpCamp- from the Web Developer Bootcamp 2022 by Colt Steele: https://www.udemy.com/course/the-web-developer-bootcamp/
+My Version of YelpCamp - based on the Web Developer Bootcamp 2022 by Colt Steele: https://www.udemy.com/course/the-web-developer-bootcamp/
 
 YelpCamp allows users to create/review campgrounds, In order to create or review campgrounds users must have an account.
 
