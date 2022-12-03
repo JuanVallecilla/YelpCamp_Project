@@ -5,7 +5,7 @@ YelpCamp allows users to create/review campgrounds, In order to create or review
 
 This Project was created using Node.js, Express, MongoDB, Bootstrap and Passport.js to handle authentication.
 
-Website deployed on Heroku: https://damp-bastion-63286.herokuapp.com/
+Website deployed on render.com: https://juan-yelpcamp.onrender.com
 
 ## Features
 * Users can create, edit, remove campgrounds.
